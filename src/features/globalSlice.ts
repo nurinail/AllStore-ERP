@@ -7,7 +7,7 @@ export interface GlobalSliceType {
 }
 
 const initialState: GlobalSliceType = {
-  isAuthenticated:false,
+  isAuthenticated:true,
   isTable:false,
 }
 

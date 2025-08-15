@@ -16,11 +16,10 @@ export const useGetItemList = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
           },
         });
         if (response.ok) {
-            dispatch(handleIsTable(false))
           const unit = await response.json();
           const changedData: ItemsType[] = unit.map((item: any) => ({
             key: item.id,
@@ -39,12 +38,11 @@ export const useGetItemList = () => {
             description: item.description,
           }));
           setData(changedData);
-          // console.log(unit)
         } else {
-          console.log("sehvvvvv")
-          dispatch(handleIsTable(false))
+          console.log("Error")
         }
-    } catch {
+    } catch {}
+    finally{
         dispatch(handleIsTable(false))
     }
     };
@@ -53,29 +51,3 @@ export const useGetItemList = () => {
   return { data };
 };
 
-// export const useGetUnit = () => {
-//   const [unit, setUnit] = useState([]);
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const token = localStorage.getItem("accessToken");
-//         const response = await fetch(URL, {
-//           headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//           },
-//         });
-//         if (!response.ok) {
-//           throw new Error("Server Error: " + response.status);
-//         }
-
-//         const json= await response.json();
-//         setUnit(json)
-//       } catch (error) {
-//       }
-//     };
-//     fetchData();
-
-//   }, []);
-// return {unit}
-// };

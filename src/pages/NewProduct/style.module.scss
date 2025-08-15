@@ -1,4 +1,34 @@
 .newProduct{
     width: 100%;
     height: 100%;
+    &_top{
+        &_category,
+      &_subcategory {
+        flex: 2;
+      }
+      &_type {
+        flex: 1;
+      }
+      &_name {
+        flex: 3;
+      }
+      &_desc {
+        flex: 3;
+      }
+    }
+    &_card{
+        &_parent{
+            gap: 2rem;
+            &_unitLeft{
+                flex: .5;
+            }
+            &_unitRight{
+                flex: 1;
+            }
+        }
+    }
+    &_button{
+        margin-top: 1rem;
+        width: 100%;
+    }
 }

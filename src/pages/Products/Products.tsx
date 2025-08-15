@@ -38,7 +38,7 @@ const Products = () => {
     },
   ];
   return (
-    <Flex vertical gap="middle">
+    <Flex vertical gap="middle" className={style.products}>
       <Flex
         justify="flex-start"
         align="flex-start"
@@ -67,7 +67,7 @@ const Products = () => {
       <Table
         size="middle"
         loading={isLoading}
-        className={style.productList_table}
+        className={style.products_table}
         dataSource={data}
         columns={columns}
         pagination={{ pageSize: 8 }}
