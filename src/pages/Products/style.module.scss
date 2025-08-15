@@ -1,0 +1,16 @@
+.products_searchBar{
+    height: 3.6rem;
+    &_select{
+        width: 10rem !important;
+        height: 100%;
+    }
+    &_input{
+        height: 100%;
+        width: 36% ;
+    }
+    &_button{
+        height: 100%;
+        width: 10rem;
+        margin-left: 1rem;
+    }
+}

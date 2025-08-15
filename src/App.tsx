@@ -23,14 +23,22 @@ import {
 import { Content } from "antd/es/layout/layout";
 import AppRouter from "./routes/AppRouter/AppRouter";
 import { useNavigate } from "react-router";
+import Login from "./pages/Login/Login";
+import { useLogin } from "./hooks/useLogin";
+import {  useSelector } from "react-redux";
+import type { RootState } from "./store/store";
 
 function App() {
+  const isAuthenticated=useSelector((state:RootState)=>state.globalSlice.isAuthenticated);
    const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [selectedKeys, setSelectedKeys] = useState(["/products"]);
   return (
-    <Layout className="app">
-      <Sider className="app_sider" collapsed={collapsed}>
+    <Layout className={isAuthenticated?"app":"aut_app"}>
+      {isAuthenticated?
+      (
+        <>
+        <Sider className="app_sider" collapsed={collapsed}>
         <Menu
           mode="inline"
           rootClassName="app_menu"
@@ -116,10 +124,17 @@ function App() {
       </Sider>
       <Layout className="app_layout">
         <Header />
+        <Content className="app_content">
      <AppRouter/>
-      </Layout>
 
+        </Content>
+      </Layout></>
+      )
+  
+      :<Login/>
+      }
       
+
     </Layout>
   );
 }
