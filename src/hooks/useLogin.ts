@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { LoginDto } from "../types/login";
 import { useDispatch } from "react-redux";
-import { handleIsAuthenticated } from "../features/globalSlice ";
+import { handleIsAuthenticated } from "../features/globalSlice";
 
 const authUrl = "http://188.245.202.61/allstore-ms/v1/api/auth/login";
 

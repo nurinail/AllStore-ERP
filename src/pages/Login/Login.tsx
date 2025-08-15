@@ -9,11 +9,8 @@ import style from "./style.module.scss";
 import type { LoginDto } from "../../types/login";
 import { useLogin } from "../../hooks/useLogin";
 const { Text } = Typography;
-
-
 const Login = () => {
 const {login,isLoading}=useLogin();
-// console.log(isAuthenticated)
   const {
     control,
     handleSubmit,
@@ -30,7 +27,6 @@ const {login,isLoading}=useLogin();
   const sendData=async (data:LoginDto)=>{
     await login(data)
     reset();
-    //  console.log(isAuthenticated)
   }
   return (
     <div className={style.login_page}>
