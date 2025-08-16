@@ -24,9 +24,7 @@ const unitNames: Record<number, string> = {
   3: "Bağlama",
 };
 const NewProduct: React.FC = () => {
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-    null
-  );
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const isPostRequest=useSelector((state:RootState)=>state.globalSlice.isPostRequest)
   const { customCategory } = useGetCategories();
   const { customSubCategory } = useGetSubCategories(selectedCategoryId);

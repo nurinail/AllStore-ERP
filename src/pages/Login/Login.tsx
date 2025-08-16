@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import classNames from "classnames";
 import { useForm, Controller } from "react-hook-form";
-import { Button, Card, Flex, Form, Input, Space, Typography } from "antd";
+import { Button, Flex, Form, Input, Space, Typography } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -14,7 +14,6 @@ const {login,isLoading}=useLogin();
   const {
     control,
     handleSubmit,
-    setError,
     reset,
     formState: { errors },
   } = useForm<LoginDto>({
@@ -58,26 +57,55 @@ const {login,isLoading}=useLogin();
           <Form.Item className={style.login_form_item}>
             <Controller
               name="username"
+              rules={{
+              required: {
+                value: true,
+                message: "İstifadəki adı daxil edin!",
+              },maxLength:{
+                value:36,
+                message:"İstidaçi adı 36 simvoldan çox ola bilməz!"
+              },
+              minLength:{
+                value:4,
+                message:"İstidaçi adı 4 simvoldan az ola bilməz!"
+              }
+            }}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
-                  className={style.login_form_item_input}
                   placeholder="İstifadəçi adı"
+                  className={classNames(errors.username?style.error_input:style.login_form_item_input)}
                   prefix={<MdEmail size={20} color="#838898" />}
                 />
               )}
             />
+             {errors.username && (
+            <p className={style.error}>{errors.username?.message}</p>)}
+
           </Form.Item>
           <Form.Item className={style.login_form_item}>
             <Controller
               name="password"
               control={control}
+              rules={{
+              required: {
+                value: true,
+                message: "Şifrə daxil edin!",
+              },maxLength:{
+                value:36,
+                message:"Şifrə 36 simvoldan çox ola bilməz!"
+              },
+              minLength:{
+                value:4,
+                message:"Şifrə 4 simvoldan az ola bilməz!"
+              }
+            }}
               render={({ field }) => (
                 <Input.Password
                   {...field}
                   type="password"
-                  className={style.login_form_item_input}
+                  className={classNames(errors.password?style.error_input:style.login_form_item_input)}
                   placeholder="Şifrə"
                   iconRender={(visible) =>
                     visible ? <EyeTwoTone className={style.login_form_item_input_visible_icon} /> : <EyeInvisibleOutlined className={style.visible_icon}/>
@@ -86,13 +114,14 @@ const {login,isLoading}=useLogin();
                 />
               )}
             />
+            {errors.password && (
+            <p className={style.error}>{errors.password?.message}</p>)}
           </Form.Item>
           <Button loading={isLoading} size="large" type="text" className={style.login_form_button} htmlType="submit">Giriş</Button>
 
         </form>
         <Flex vertical gap="small"></Flex>
       </Flex>
-      {/* </Card> */}
     </div>
   );
 };

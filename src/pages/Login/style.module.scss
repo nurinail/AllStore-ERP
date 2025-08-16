@@ -54,3 +54,13 @@
         }
     }
 }
+.error{
+    color: red;
+    margin-top: .4rem;
+    font-weight: 400;
+}
+.error_input{
+    border: 2px solid red !important;
+    padding: .8rem;
+    background-color: #EFF3F6 !important;
+}

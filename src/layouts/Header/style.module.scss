@@ -3,5 +3,13 @@
     border-radius: 1rem; 
     padding: 1rem;
 }
+.modal_title_text{
+    font-size: 1.6rem;
+    &_icon{
+        color: red !important;
+        margin-right: 1rem !important;
+        font-size: 2rem;
 
+    }
+}
 
