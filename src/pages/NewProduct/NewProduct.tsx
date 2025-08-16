@@ -11,6 +11,7 @@ import style from "./style.module.scss";
 import { useGetCategories } from "../../hooks/useGetCategory";
 import { useGetSubCategories } from "../../hooks/useGetSubCategory";
 import { useGetUnit } from "../../hooks/useGetUnit";
+import classNames from "classnames";
 
 const NewProduct: React.FC = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
@@ -40,22 +41,22 @@ const NewProduct: React.FC = () => {
   });
   const {
     fields: unitFields,
-    append:appendUnit,
-    remove:removeUnit,
+    append: appendUnit,
+    remove: removeUnit,
   } = useFieldArray({
     control,
     name: "itemUnits",
   });
   const unitArrays = useFieldArray({
-  control,
-  name: "itemUnits",
-});
-  const barcodeArrays = unitArrays.fields.map((_, i) =>
-  useFieldArray({
     control,
-    name: `itemUnits.${i}.unitBarcodes`,
-  })
-);
+    name: "itemUnits",
+  });
+  const barcodeArrays = unitArrays.fields.map((_, i) =>
+    useFieldArray({
+      control,
+      name: `itemUnits.${i}.unitBarcodes`,
+    })
+  );
   // const {fields: barcodeFields,append: appendBarcode,
   //   remove: removeBarcode,
   // } = useFieldArray({
@@ -185,51 +186,48 @@ const NewProduct: React.FC = () => {
       <Card className={style.newProduct_card} title="Vahidlər">
         <Flex className={style.newProduct_card_parent}>
           <Card className={style.newProduct_card_parent_unitLeft} title="Vahid">
-            {isMainUnit && (
-             <Flex vertical>
-  {unitFields.map((field, index) => (
-    <Form.Item
-      key={field.id}
-      className={style.newProduct_card_parent_unitLeft_item}
-    >
-      <Controller
-        control={control}
-        name={`itemUnits.${index}.unitId`}
-        render={({ field }) => (
-          <Select
-            {...field}
-            onFocus={() => setItemIndex(index)}
-            placeholder={
-              isMainUnit
-                ? "Əsas vahid əlavə et"
-                : "Vahid əlavə et"
-            }
-            options={
-              unit?.map((item: OptionType) => ({
-                label: item.name,
-                value: item.id,
-              }))
-            }
-          />
-        )}
-      />
-    </Form.Item>
-  ))}
-</Flex>
-
+            {unitFields && (
+              <Flex vertical>
+                {unitFields.map((field, index) => (
+                  <Form.Item
+                    key={field.id}
+                    className={style.newProduct_card_parent_unitLeft_item}
+                    
+                  >
+                    <Controller
+                      control={control}
+                      name={`itemUnits.${index}.unitId`}
+                      render={({ field }) => (
+                        <Select
+                          {...field}
+                          className={classNames(index===0&&style.mainUnitSelectActive)}
+                          onClick={() => setItemIndex(index)}
+                          placeholder={index===0?"Əsas Vahid":"Vahid"}
+                          options={unit?.map((item: OptionType) => ({
+                            label: item.name,
+                            value: item.id,
+                          }))}
+                        />
+                      )}
+                    />
+                  </Form.Item>
+                ))}
+              </Flex>
             )}
-            <Button 
-            htmlType="button"
-            onClick={()=>{
-appendUnit({
-      unitId: undefined,
-        main: false,
-        convact1: 1,
-        convact2: 1,
-        unitBarcodes: [],
-    })
-            }}>
-              {isMainUnit ? "Əsas Vahid Əlavə Et" : "Vahid Əlavə Et"}
+            <Button
+              htmlType="button"
+              className={style.newProduct_card_parent_unitLeft_button}
+              onClick={() => {
+                appendUnit({
+                  unitId: undefined,
+                  main: unitFields.length===0 ? true : false,
+                  convact1: 1,
+                  convact2: 1,
+                  unitBarcodes: [],
+                });
+              }}
+            >
+              {unitFields.length===0  ? "Əsas Vahid Əlavə Et" : "Vahid Əlavə Et"}
             </Button>
           </Card>
           <Card className={style.newProduct_card_parent_unitRight}></Card>
