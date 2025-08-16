@@ -10,23 +10,25 @@ import type { LoginDto } from "../../types/login";
 import { useLogin } from "../../hooks/useLogin";
 const { Text } = Typography;
 const Login = () => {
-const {login,isLoading}=useLogin();
+  const { login, isLoading } = useLogin();
   const {
     control,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm<LoginDto>({
     mode: "onSubmit",
-    defaultValues:{
-        username:"",
-        password:"",
-    }
+    defaultValues: {
+      username: "",
+      password: "",
+    },
   });
-  const sendData=async (data:LoginDto)=>{
+  const sendData = async (data: LoginDto) => {
     await login(data)
     reset();
-  }
+   
+  };
   return (
     <div className={style.login_page}>
       <Flex
@@ -35,7 +37,6 @@ const {login,isLoading}=useLogin();
         justify="center"
         align="center"
         gap="middle"
-        
       >
         <Space
           className={style.login_page_card_title}
@@ -58,67 +59,91 @@ const {login,isLoading}=useLogin();
             <Controller
               name="username"
               rules={{
-              required: {
-                value: true,
-                message: "İstifadəki adı daxil edin!",
-              },maxLength:{
-                value:36,
-                message:"İstidaçi adı 36 simvoldan çox ola bilməz!"
-              },
-              minLength:{
-                value:4,
-                message:"İstidaçi adı 4 simvoldan az ola bilməz!"
-              }
-            }}
+                required: {
+                  value: true,
+                  message: "İstifadəki adı daxil edin!",
+                },
+                maxLength: {
+                  value: 36,
+                  message: "İstidaçi adı 36 simvoldan çox ola bilməz!",
+                },
+                minLength: {
+                  value: 4,
+                  message: "İstidaçi adı 4 simvoldan az ola bilməz!",
+                },
+              }}
               control={control}
               render={({ field }) => (
                 <Input
                   {...field}
                   placeholder="İstifadəçi adı"
-                  className={classNames(errors.username?style.error_input:style.login_form_item_input)}
-                  prefix={<MdEmail size={20} color="#838898" />}
+                  className={classNames(
+                    errors.username
+                      ? style.error_input
+                      : style.login_form_item_input
+                  )}
+                  prefix={<MdEmail size={20} color={errors.username?"red":"#838898"} />}
                 />
               )}
             />
-             {errors.username && (
-            <p className={style.error}>{errors.username?.message}</p>)}
-
+            {errors.username && (
+              <p className={style.error}>{errors.username?.message}</p>
+            )}
           </Form.Item>
           <Form.Item className={style.login_form_item}>
             <Controller
               name="password"
               control={control}
               rules={{
-              required: {
-                value: true,
-                message: "Şifrə daxil edin!",
-              },maxLength:{
-                value:36,
-                message:"Şifrə 36 simvoldan çox ola bilməz!"
-              },
-              minLength:{
-                value:4,
-                message:"Şifrə 4 simvoldan az ola bilməz!"
-              }
-            }}
+                required: {
+                  value: true,
+                  message: "Şifrə daxil edin!",
+                },
+                maxLength: {
+                  value: 36,
+                  message: "Şifrə 36 simvoldan çox ola bilməz!",
+                },
+                minLength: {
+                  value: 4,
+                  message: "Şifrə 4 simvoldan az ola bilməz!",
+                },
+              }}
               render={({ field }) => (
                 <Input.Password
                   {...field}
                   type="password"
-                  className={classNames(errors.password?style.error_input:style.login_form_item_input)}
+                  className={classNames(
+                    errors.password
+                      ? style.error_input
+                      : style.login_form_item_input
+                  )}
                   placeholder="Şifrə"
                   iconRender={(visible) =>
-                    visible ? <EyeTwoTone className={style.login_form_item_input_visible_icon} /> : <EyeInvisibleOutlined className={style.visible_icon}/>
+                    visible ? (
+                      <EyeTwoTone
+                        className={style.login_form_item_input_visible_icon}
+                      />
+                    ) : (
+                      <EyeInvisibleOutlined className={style.visible_icon} />
+                    )
                   }
-                  prefix={<RiLockPasswordFill size={20} color="#838898" />}
+                  prefix={<RiLockPasswordFill size={20} color={errors.username?"red":"#838898"} />}
                 />
               )}
             />
             {errors.password && (
-            <p className={style.error}>{errors.password?.message}</p>)}
+              <p className={style.error}>{errors.password?.message}</p>
+            )}
           </Form.Item>
-          <Button loading={isLoading} size="large" type="text" className={style.login_form_button} htmlType="submit">Giriş</Button>
-
+          <Button
+            loading={isLoading}
+            size="large"
+            type="text"
+            className={style.login_form_button}
+            htmlType="submit"
+          >
+            Giriş
+          </Button>
         </form>
         <Flex vertical gap="small"></Flex>
       </Flex>

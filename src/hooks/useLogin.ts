@@ -10,35 +10,35 @@ export const useLogin = () => {
   const dispatch = useDispatch();
 
   const login = async (value: LoginDto) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(authUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          username: value.username.trim(),
-          password: value.password.trim(),
-        }),
-      });
+  setIsLoading(true);
+  try {
+    const response = await fetch(authUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: value.username.trim(),
+        password: value.password.trim(),
+      }),
+    });
 
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("refreshToken", data.refreshToken);
-        console.log("Hər şey qaydasındadır");
-        console.log(data);
-        dispatch(handleIsAuthenticated(true));
-      } else {
-        dispatch(handleIsAuthenticated(false));
-        // console.log("Yanlış istifadəki")
-      }
-    } catch (error) {
-      // console.log("Error oldu");
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      dispatch(handleIsAuthenticated(true));
+    } else {
       dispatch(handleIsAuthenticated(false));
-    } finally {
-      setIsLoading(false);
     }
-  };
+
+    return response; 
+  } catch (error) {
+    dispatch(handleIsAuthenticated(false));
+    throw error; 
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return { login, isLoading };
 };
