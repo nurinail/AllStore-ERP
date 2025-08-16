@@ -1,4 +1,5 @@
 export interface ItemCreateRequestDto{
+  category:string;
     subcategoryId:number | undefined;
     status:"PASSIVE" | "ACTIVE" ;
     itemType:"PRODUCT"|"SERVICE" | undefined;

@@ -4,11 +4,13 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 export interface GlobalSliceType {
   isAuthenticated: boolean;
   isTable:boolean;
+  isPostRequest:boolean;
 }
 
 const initialState: GlobalSliceType = {
   isAuthenticated:true,
   isTable:false,
+  isPostRequest:false,
 }
 
 export const globalSlice = createSlice({
@@ -21,10 +23,13 @@ export const globalSlice = createSlice({
     handleIsTable: (state,action: PayloadAction<boolean>) => {
       state.isTable=action.payload
     },
+    handlePostCreatProduct:(state,action:PayloadAction<boolean>)=>{
+      state.isPostRequest=action.payload
+    }
     
   },
 })
 
-export const { handleIsAuthenticated,handleIsTable } = globalSlice.actions
+export const { handleIsAuthenticated,handleIsTable,handlePostCreatProduct } = globalSlice.actions
 
 export default globalSlice.reducer
