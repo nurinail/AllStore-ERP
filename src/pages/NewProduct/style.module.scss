@@ -26,6 +26,25 @@
                 &_item{
                   margin: 0 ;
                   margin-bottom: 1rem;
+                  &_choose{
+                    color: black !important;
+                    display: flex;
+                    align-items: center;
+                    font-size: 1.6rem;
+                    justify-content: center;
+                    background-color: transparent;
+                    transition: all .7s;
+                    cursor: pointer;
+                    border-color: #60a6ab !important;
+                    &:hover{
+                      transform: scale(1.04);
+                    }
+                  }
+                  &_isMain{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  }
                   .mainUnitSelectActive :global(.ant-select-selector) {
                 background-color: #f3f5f6 !important;
                 border-radius: 6px;
@@ -48,6 +67,50 @@
             }
             &_unitRight{
                 flex: 1;
+                &_tags{
+                  &_item{
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: .4rem;
+                  }
+                  &_delete_unit_button{
+                    flex: 1;
+                  }
+                }
+                &_units{
+                  margin-top: 2rem;
+                }
+                &_barcodes{
+                  width: 30%;
+                  &_item{
+                    margin: 0;
+                    position: relative;
+                    &_input{
+                    }
+                    &_delete_button{
+                      transition: all .7s;
+                      position: absolute;
+                      right: -12%;
+                      top: 50%;
+                      transform: translate(0,-50%);
+                      cursor: pointer;
+                      color: red;
+                      &:hover{
+                        // transform: scale(1.1);
+                        color: rgb(193, 5, 5);
+                      }
+
+                    }
+                  }
+                   
+                  
+                  &_add_button{
+                    width: 60%;
+                    margin-top: 1rem;
+                  }
+                }
             }
         }
     }

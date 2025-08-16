@@ -36,13 +36,13 @@
 .app_menu .ant-menu-item-selected {
   background: linear-gradient(to right, #b2babc, #79959e) !important;
   color: #1f1e1c !important;
-  border-radius: 2rem;
+  /* border-radius: 2rem; */
   /* font-weight: bold; */
 }
 .app_menu .ant-menu-item:hover {
   transition: all 0.7s;
   background-color: #bfc3c4 !important;
-  border-radius: 2rem !important;
+  /* border-radius: 2rem !important; */
 }
 .app_menu_collapse_button{
     position: absolute;

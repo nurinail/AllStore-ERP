@@ -16,7 +16,7 @@ unitBarcodes:UnitBarcodeCreateRequestDto[]
 }
 
 export interface UnitBarcodeCreateRequestDto{
-  id:number | null;
+  // id:number | null;
 barcode:string
 }
 

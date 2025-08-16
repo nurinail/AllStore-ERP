@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { Button, Card, Flex, Form, Input, Select } from "antd";
+import { Button, Card, Flex, Form, Input, Select, Tag } from "antd";
+import { MdDelete } from "react-icons/md";
 import type {
   CategoryType,
   ItemCreateRequestDto,
@@ -8,11 +9,17 @@ import type {
   SubCategoryType,
 } from "../../types/other";
 import style from "./style.module.scss";
+import { TbHandClick } from "react-icons/tb";
 import { useGetCategories } from "../../hooks/useGetCategory";
 import { useGetSubCategories } from "../../hooks/useGetSubCategory";
 import { useGetUnit } from "../../hooks/useGetUnit";
 import classNames from "classnames";
 
+const unitNames: Record<number, string> = {
+  1: "Ədəd",
+  2: "Qutu",
+  3: "Bağlama",
+};
 const NewProduct: React.FC = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
     null
@@ -21,7 +28,9 @@ const NewProduct: React.FC = () => {
   const { customSubCategory } = useGetSubCategories(selectedCategoryId);
   const { unit } = useGetUnit();
   const [itemIndex, setItemIndex] = useState<number>(0);
-  const [isMainUnit, setIsMainUnit] = useState<boolean>(true);
+  const handleChangeUnitName = (id: number): string => {
+    return unitNames[id] || "Vahid Seç";
+  };
   const {
     control,
     handleSubmit,
@@ -42,44 +51,10 @@ const NewProduct: React.FC = () => {
   const {
     fields: unitFields,
     append: appendUnit,
-    remove: removeUnit,
   } = useFieldArray({
     control,
     name: "itemUnits",
   });
-  const unitArrays = useFieldArray({
-    control,
-    name: "itemUnits",
-  });
-  const barcodeArrays = unitArrays.fields.map((_, i) =>
-    useFieldArray({
-      control,
-      name: `itemUnits.${i}.unitBarcodes`,
-    })
-  );
-  // const {fields: barcodeFields,append: appendBarcode,
-  //   remove: removeBarcode,
-  // } = useFieldArray({
-  //   control,
-  //   name: `itemUnits.${itemIndex}.unitBarcodes`,
-  // });
-
-  // const {
-  //   fields: unitFields,
-  //   append: appendUnit,
-  //   remove: removeUnit,
-  // } = useFieldArray({
-  //   control,
-  //   name: "itemUnits",
-  // });
-  // const {
-  //   fields: barcodeFields,
-  //   append: appendBarcode,
-  //   remove: removeBarcode,
-  // } = useFieldArray({
-  //   control,
-  //   name: `itemUnits.${itemIndex}.unitBarcodes`,
-  // });
   const handleCreateProduct = async (value: any) => {
     console.log(value);
   };
@@ -198,16 +173,21 @@ const NewProduct: React.FC = () => {
                       control={control}
                       name={`itemUnits.${index}.unitId`}
                       render={({ field }) => (
-                        <Select
-                          {...field}
-                          className={classNames(index===0&&style.mainUnitSelectActive)}
-                          onClick={() => setItemIndex(index)}
-                          placeholder={index===0?"Əsas Vahid":"Vahid"}
-                          options={unit?.map((item: OptionType) => ({
-                            label: item.name,
-                            value: item.id,
-                          }))}
-                        />
+                        <Flex gap={8}>
+                         <Tag className={style.newProduct_card_parent_unitLeft_item_isMain}>{index===0?"Ə":"D"}</Tag>
+                          <Select
+                            {...field}
+                            className={classNames(index===0&&style.mainUnitSelectActive)}
+                            onChange={(e)=>field.onChange(e)}
+                            value={watch(`itemUnits.${index}.unitId`)}
+                            placeholder={index===0?"Əsas Vahid":"Vahid"}
+                            options={unit?.map((item: OptionType) => ({
+                              label: item.name,
+                              value: item.id,
+                            }))}
+                          />
+                           <Tag className={style.newProduct_card_parent_unitLeft_item_choose} onClick={() => setItemIndex(index)}><TbHandClick/></Tag>
+                        </Flex>
                       )}
                     />
                   </Form.Item>
@@ -217,6 +197,7 @@ const NewProduct: React.FC = () => {
             <Button
               htmlType="button"
               className={style.newProduct_card_parent_unitLeft_button}
+              
               onClick={() => {
                 appendUnit({
                   unitId: undefined,
@@ -225,12 +206,105 @@ const NewProduct: React.FC = () => {
                   convact2: 1,
                   unitBarcodes: [],
                 });
+                const newIndex = unitFields.length;
+                setItemIndex(newIndex);
               }}
             >
               {unitFields.length===0  ? "Əsas Vahid Əlavə Et" : "Vahid Əlavə Et"}
             </Button>
           </Card>
-          <Card className={style.newProduct_card_parent_unitRight}></Card>
+            {
+              unitFields.length>0&&(
+                <Card className={style.newProduct_card_parent_unitRight}>
+                  <Flex className={style.newProduct_card_parent_unitRight_tags}>
+                    <Tag
+                    className={style.newProduct_card_parent_unitRight_tags_item}
+                    color="magenta"
+                  >{handleChangeUnitName(Number(watch(`itemUnits.${itemIndex}.unitId`)))}</Tag>
+                    <Tag
+                    className={style.newProduct_card_parent_unitRight_tags_item}
+                    color="cyan"
+                    >-</Tag>
+                    <Tag
+                    className={style.newProduct_card_parent_unitRight_tags_item}
+                    color="geekblue"
+                    >{handleChangeUnitName(Number(watch(`itemUnits.${itemIndex}.unitId`)))}</Tag>
+                    <Button className={style.newProduct_card_parent_unitRight_tags_delete_unit_button} danger type="primary" htmlType="button">Sil</Button>
+                  </Flex>
+                  <Flex gap={10} className={style.newProduct_card_parent_unitRight_units}>
+                    <Form.Item label={`${handleChangeUnitName(
+                        Number(watch(`itemUnits.0.unitId`))
+                      )} (Əsas Vahid)`}>
+                        <Controller
+                        control={control}
+                        name={`itemUnits.${itemIndex}.convact2`}
+                        render={({field})=>(
+                          <Input
+                          {...field}
+                          onChange={(e) => field.onChange(e)}
+                          value={watch(`itemUnits.${itemIndex}.convact2`)}
+                          disabled={unitFields.length>1 && itemIndex===0?true:false}
+                          type="number"
+                          />
+                        )}
+                        />
+
+                    </Form.Item>
+                    <Form.Item label={`${handleChangeUnitName(
+                        Number(watch(`itemUnits.${itemIndex}.unitId`))
+                      )}`}>
+                        <Controller
+                        control={control}
+                        name={`itemUnits.${itemIndex}.convact1`}
+                        render={({field})=>(
+                          <Input
+                          {...field}
+                          onChange={(e) => field.onChange(e)}
+                          value={watch(`itemUnits.${itemIndex}.convact1`)}
+                          disabled={unitFields.length>1 && itemIndex===0?true:false}
+                          type="number"
+                          />
+                        )}
+                        />
+
+                    </Form.Item>
+                  </Flex>
+                    <Form.List name={`itemUnits.${itemIndex}.unitBarcodes`}>
+                      {(fields,{add,remove})=>(
+                        <Flex className={style.newProduct_card_parent_unitRight_barcodes} gap={10} vertical>
+                        {fields.map((fielddd,index)=>(
+                          <Form.Item className={style.newProduct_card_parent_unitRight_barcodes_item}>
+                            <Controller
+                            control={control}
+                            name={`itemUnits.${itemIndex}.unitBarcodes.${index}.barcode`}
+                            render={({field})=>(
+                              <Input
+                              className={style.newProduct_card_parent_unitRight_barcodes_item_input}
+                              {...field}
+                              placeholder="Barkod..."
+                              onChange={(e)=>field.onChange(e)}
+                              value={watch(`itemUnits.${itemIndex}.unitBarcodes.${index}.barcode`)}
+                              />
+                            )}
+                            />
+                          <MdDelete onClick={()=>{
+                            remove(fielddd.name),
+                            unitFields[itemIndex].unitBarcodes.splice(fielddd.name,1)
+                          }} className={style.newProduct_card_parent_unitRight_barcodes_item_delete_button} size={23}/>
+                          {/* <Button htmlType="button" danger onClick={()=>{
+                            remove(fielddd.name),
+                            unitFields[itemIndex].unitBarcodes.splice(fielddd.name,1)
+                          }}>delete</Button> */}
+                          </Form.Item>
+
+                        ))}
+                        <Button className={style.newProduct_card_parent_unitRight_barcodes_add_button} htmlType="button" type="dashed" onClick={()=>add()}>Barkod əlavə et </Button>
+                        </Flex>
+                      )}
+                    </Form.List>
+                </Card>
+              )
+            }
         </Flex>
       </Card>
       <Button
