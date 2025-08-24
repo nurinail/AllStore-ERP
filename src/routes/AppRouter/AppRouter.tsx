@@ -4,9 +4,12 @@ import NewProduct from "../../pages/NewProduct/NewProduct";
 import Products from "../../pages/Products/Products";
 
 const AppRouter = () => {
-  return <Routes>
-      <Route path="/products" element={<Products/>}/>
-      <Route path="/newproduct" element={<NewProduct/>}/>
+  return (
+    <Routes>
+      <Route path="/products">
+        <Route path="/products/list" element={<Products />} />
+        <Route path="/products/new" element={<NewProduct />} />
+      </Route>
       {/* <Route path="/purchases" element={<PurschaseList/>}/> */}
       {/* <Route path="/purchasesreturn" element={<PurchaseReturns/>}/> */}
       {/* <Route path="/newpurchases" element={<NewPurchase/>}/> */}
@@ -16,7 +19,7 @@ const AppRouter = () => {
       {/* <Route path="/newsale" element={<NewSale/>}/> */}
       {/* <Route path="/newsalereturn" element={<NewSaleReturn/>}/> */}
     </Routes>
-
+  );
 };
 
 export default AppRouter;

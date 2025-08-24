@@ -3,7 +3,7 @@ import "./App.css";
 import Header from "./layouts/Header/Header";
 import SideBar from "./layouts/SideBar/SideBar";
 import NewProduct from "./pages/NewProduct/NewProduct";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sider from "antd/es/layout/Sider";
 import {
   AlignLeftOutlined,
@@ -32,7 +32,7 @@ function App() {
   const isAuthenticated=useSelector((state:RootState)=>state.globalSlice.isAuthenticated);
    const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedKeys, setSelectedKeys] = useState(["/products"]);
+  const [selectedKeys, setSelectedKeys] = useState(["/products/list"]);
   return (
     <Layout className={isAuthenticated?"app":"aut_app"}>
       {isAuthenticated?
@@ -49,19 +49,19 @@ function App() {
           }}
           items={[
             {
-              key: "products",
+              key: "/products/list",
               icon: <ProductOutlined />,
               label: "Məhsullar",
               className: "app_menu_item",
               children: [
                 {
-                  key: "/products",
+                  key: "/products/list",
                   label: "Siyahı",
                   icon: <FileProtectOutlined />,
                    className: "app_menu_item_child",
                 },
                 {
-                  key: "/newproduct",
+                  key: "/products/new",
                   label: "Yeni Məhsul",
                   icon: <DownloadOutlined />,
                    className: "app_menu_item_child",

@@ -16,7 +16,7 @@ const initialState: GlobalSliceType = {
 export const globalSlice = createSlice({
   name: 'app',
   initialState,
-  reducers: {
+  reducers: {  
     handleIsAuthenticated: (state,action: PayloadAction<boolean>) => {
       state.isAuthenticated=action.payload
     },
