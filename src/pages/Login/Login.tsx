@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { useForm, Controller } from "react-hook-form";
-import { Button, Flex, Form, Input, Space, Typography } from "antd";
+import { Alert, Button, Flex, Form, Input, Space, Typography } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -10,7 +10,7 @@ import type { LoginDto } from "../../types/login";
 import { useLogin } from "../../hooks/useLogin";
 const { Text } = Typography;
 const Login = () => {
-  const { login, isLoading } = useLogin();
+  const { login, isLoading,isLogin } = useLogin();
   const {
     control,
     handleSubmit,
@@ -135,6 +135,15 @@ const Login = () => {
               <p className={style.error}>{errors.password?.message}</p>
             )}
           </Form.Item>
+         {
+          !isLogin&&(
+             <Alert
+          message="İstifadəçi adı və ya şifrə səhvdir!"
+          type="error"
+          showIcon
+          />
+          )
+         }
           <Button
             loading={isLoading}
             size="large"

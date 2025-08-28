@@ -6,7 +6,8 @@ import { handleIsAuthenticated } from "../features/globalSlice";
 const authUrl = "http://188.245.202.61/allstore-ms/v1/api/auth/login";
 
 export const useLogin = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLogin,setIsLogin]=useState<boolean>(true)
   const dispatch = useDispatch();
 
   const login = async (value: LoginDto) => {
@@ -26,13 +27,17 @@ export const useLogin = () => {
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
       dispatch(handleIsAuthenticated(true));
+      setIsLogin(true);
     } else {
       dispatch(handleIsAuthenticated(false));
+      setIsLogin(false);
+      
     }
-
+    
     return response; 
   } catch (error) {
     dispatch(handleIsAuthenticated(false));
+    setIsLogin(false);
     throw error; 
   } finally {
     setIsLoading(false);
@@ -40,5 +45,5 @@ export const useLogin = () => {
 };
 
 
-  return { login, isLoading };
+  return { login, isLoading,isLogin };
 };
